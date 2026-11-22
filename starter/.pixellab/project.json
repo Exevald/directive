@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "entry": "editor.js",
+  "tools": "brushes.js",
+  "ai": "ai.js"
+}

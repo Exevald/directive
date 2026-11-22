@@ -1,0 +1,14 @@
+{
+  "name": "directive-image-lab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --experimental-strip-types apps/api/server.ts",
+    "start": "node --experimental-strip-types apps/api/server.ts",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "check": "npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
