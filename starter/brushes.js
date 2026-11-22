@@ -50,7 +50,7 @@ function eraser(x1, y1, x2, y2) {
 }
 
 // Главная творческая задача практикума: измени эту кисть.
-// Ею сможет рисовать и мышь, и AI Artist.
+// Ею можно рисовать мышью.
 function myBrush(x1, y1, x2, y2) {
     ctx.fillStyle = editor.color;
     ctx.beginPath();

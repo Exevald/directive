@@ -1,0 +1,1 @@
+{"name":"directive-ai","private":true,"type":"module","scripts":{"build":"mkdir -p dist && cp plugin/src/artist.js dist/artist.js","start":"node --experimental-strip-types server/src/http.ts","test":"node --experimental-strip-types --test tests/*.test.ts","test:load":"node --experimental-strip-types tests/load-smoke.mjs"},"engines":{"node":">=22"}}
