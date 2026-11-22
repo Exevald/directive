@@ -1,8 +1,8 @@
 services:
   artist:
     build:
-      context: ..
-      dockerfile: deploy/Dockerfile
+      context: ../..
+      dockerfile: directive-ai/deploy/Dockerfile
     env_file: ../.env
     ports:
       - "127.0.0.1:4242:4242"

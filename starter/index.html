@@ -1,43 +1,51 @@
 <!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>PixelLab Paint</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<main class="app">
-    <header>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
         <div>
-            <strong>PixelLab</strong>
+          <strong>PixelLab</strong>
         </div>
-    </header>
-    <section class="toolbar">
+      </header>
+      <section class="toolbar">
         <div class="tools">
-            <button class="tool selected" data-brush="pencil" onclick="selectBrush('pencil')">Карандаш</button>
-            <button class="tool" data-brush="marker" onclick="selectBrush('marker')">Маркер</button>
-            <button class="tool" data-brush="spray" onclick="selectBrush('spray')">Спрей</button>
-            <button class="tool" data-brush="eraser" onclick="selectBrush('eraser')">Ластик</button>
-            <button class="tool" data-brush="line" onclick="selectBrush('line')">Линия</button>
-            <button class="tool" data-brush="circle" onclick="selectBrush('circle')">Круг</button>
-            <button class="tool" data-brush="rectangle" onclick="selectBrush('rectangle')">Прямоугольник</button>
-            <button class="tool custom" data-brush="myBrush" onclick="selectBrush('myBrush')">Моя кисть</button>
+          <button class="tool selected" data-brush="pencil" onclick="selectBrush('pencil')">
+            Карандаш
+          </button>
+          <button class="tool" data-brush="marker" onclick="selectBrush('marker')">Маркер</button>
+          <button class="tool" data-brush="spray" onclick="selectBrush('spray')">Спрей</button>
+          <button class="tool" data-brush="eraser" onclick="selectBrush('eraser')">Ластик</button>
+          <button class="tool" data-brush="line" onclick="selectBrush('line')">Линия</button>
+          <button class="tool" data-brush="circle" onclick="selectBrush('circle')">Круг</button>
+          <button class="tool" data-brush="rectangle" onclick="selectBrush('rectangle')">
+            Прямоугольник
+          </button>
+          <button class="tool custom" data-brush="myBrush" onclick="selectBrush('myBrush')">
+            Моя кисть
+          </button>
         </div>
-        <div class="settings"><label>Цвет
-            <input id="color" type="color" value="#172026"></label><label>Размер <input
-                id="size" type="range" min="1" max="80" value="10">
-            <output id="sizeValue">10</output>
-        </label><span class="spacer"></span>
-            <button id="clearButton">Очистить</button>
-            <button id="downloadButton">Скачать PNG</button>
+        <div class="settings">
+          <label>Цвет <input id="color" type="color" value="#172026" /></label
+          ><label
+            >Размер <input id="size" type="range" min="1" max="80" value="10" />
+            <output id="sizeValue">10</output> </label
+          ><span class="spacer"></span>
+          <button id="clearButton">Очистить</button>
+          <button id="downloadButton">Скачать PNG</button>
         </div>
-    </section>
-    <section class="canvas-wrap">
+      </section>
+      <section class="canvas-wrap">
         <canvas id="canvas" width="800" height="520"></canvas>
-        <p id="status">Карандаш · 10 px</p></section>
-</main>
-<script src="editor.js"></script>
-<script src="brushes.js"></script>
-</body>
+        <p id="status">Карандаш · 10 px</p>
+      </section>
+    </main>
+    <script src="editor.js"></script>
+    <script src="brushes.js"></script>
+  </body>
 </html>

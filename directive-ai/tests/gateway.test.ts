@@ -1,30 +1,69 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import type { DrawingAction } from "../server/src/schema.ts";
+
 process.env.EVENT_CODE = "test-event-code";
 process.env.ALLOWED_ORIGINS = "http://127.0.0.1:8080";
 process.env.AI_PROVIDER = "mock";
 const { createGateway } = await import("../server/src/http.ts");
 
-test("session, CORS and mock drawing complete through HTTP", async () => {
+test("session, CORS and mock drawing complete through HTTP", async (): Promise<void> => {
   const server = createGateway();
-  await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
-  const base = `http://127.0.0.1:${server.address().port}`;
+  await new Promise<void>((resolve: () => void): void => {
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const address = server.address();
+  if (!address || typeof address === "string") throw Error("No TCP address");
+  const base: string = `http://127.0.0.1:${address.port}`;
   const headers = { "Content-Type": "application/json", Origin: "http://127.0.0.1:8080" };
   try {
     const preflight = await fetch(base + "/v1/draw", { method: "OPTIONS", headers });
     assert.equal(preflight.status, 204);
-    const denied = await fetch(base + "/v1/session", { method: "POST", headers, body: JSON.stringify({ code: "wrong" }) });
+    const denied = await fetch(base + "/v1/session", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ code: "wrong" }),
+    });
     assert.equal(denied.status, 401);
-    const session = await fetch(base + "/v1/session", { method: "POST", headers, body: JSON.stringify({ code: "test-event-code" }) });
+    const session = await fetch(base + "/v1/session", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ code: "test-event-code" }),
+    });
     assert.equal(session.status, 200);
-    const { token } = await session.json();
-    const draw = await fetch(base + "/v1/draw", { method: "POST", headers: { ...headers, Authorization: `Bearer ${token}` }, body: JSON.stringify({ schemaVersion: 1, prompt: "Дом", canvas: { width: 800, height: 520 }, tools: ["setColor", "drawLine", "myBrush"] }) });
+    const sessionData: unknown = await session.json();
+    assert.ok(
+      typeof sessionData === "object" &&
+        sessionData !== null &&
+        "token" in sessionData &&
+        typeof sessionData.token === "string",
+    );
+    const token: string = sessionData.token;
+    const draw = await fetch(base + "/v1/draw", {
+      method: "POST",
+      headers: { ...headers, Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        schemaVersion: 1,
+        prompt: "Дом",
+        canvas: { width: 800, height: 520 },
+        tools: ["setColor", "drawLine", "myBrush"],
+      }),
+    });
     assert.equal(draw.status, 200);
-    const plan = await draw.json();
+    const plan: { schemaVersion: number; mode: string; actions: DrawingAction[] } =
+      await draw.json();
     assert.equal(plan.schemaVersion, 1);
     assert.equal(plan.mode, "demo");
-    assert.ok(plan.actions.some(action => action.tool === "myBrush"));
-    const tooLarge = await fetch(base + "/v1/draw", { method: "POST", headers: { ...headers, Authorization: `Bearer ${token}` }, body: JSON.stringify({ data: "x".repeat(9000) }) });
+    assert.ok(plan.actions.some((action: DrawingAction): boolean => action.tool === "myBrush"));
+    const tooLarge = await fetch(base + "/v1/draw", {
+      method: "POST",
+      headers: { ...headers, Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ data: "x".repeat(9000) }),
+    });
     assert.equal(tooLarge.status, 413);
-  } finally { await new Promise(resolve => server.close(resolve)); }
+  } finally {
+    await new Promise<void>((resolve: () => void): void => {
+      server.close(resolve);
+    });
+  }
 });

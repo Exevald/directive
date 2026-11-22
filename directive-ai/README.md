@@ -3,10 +3,10 @@
 Этот каталог находится в том же репозитории, что и редактор, но не входит в папку `starter/` и ученический архив. Он содержит подключаемый скрипт и шлюз. `AI_PROVIDER=mock` честно показывает демо-режим. Для облачной модели установите `AI_PROVIDER=cloud`, `AI_MODEL`, `AI_API_KEY` и совместимый `AI_BASE_URL` на сервере. Ключи не попадают в браузер. Ответ модели проверяется сервером и браузерным плагином.
 
 ```bash
-cd directive-ai
+npm ci
 npm run build
-EVENT_CODE=long-random-code ALLOWED_ORIGINS=http://127.0.0.1:8080 npm start
-npm test
+EVENT_CODE=long-random-code ALLOWED_ORIGINS=http://127.0.0.1:8080 npm run start:ai
+npm run check
 ```
 
 Для показа раздайте скопированный ученический `starter/` отдельным HTTP-сервером на разрешённом origin. Наставник добавляет после `brushes.js` одну строку:

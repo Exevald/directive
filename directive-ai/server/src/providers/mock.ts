@@ -1,10 +1,24 @@
-export const mockProvider = {
-  async generatePlan({ canvas, tools }) {
+import type {
+  DrawingAction,
+  DrawingPlan,
+  DrawingProvider,
+  DrawingRequest,
+  ToolName,
+} from "../schema.ts";
+
+export const mockProvider: DrawingProvider = {
+  async generatePlan({ canvas, tools }: DrawingRequest): Promise<DrawingPlan> {
     const delay = Number(process.env.MOCK_DELAY_MS || 0);
-    if (delay > 0) await new Promise(resolve => setTimeout(resolve, Math.min(delay, 5000)));
-    const actions = [];
-    const add = (tool, args) => { if (tools.includes(tool)) actions.push({ tool, args }); };
-    const x = canvas.width / 2, y = canvas.height / 2;
+    if (delay > 0)
+      await new Promise<void>((resolve: () => void): void => {
+        setTimeout(resolve, Math.min(delay, 5000));
+      });
+    const actions: DrawingAction[] = [];
+    const add = (tool: ToolName, args: Record<string, number | string>): void => {
+      if (tools.includes(tool)) actions.push({ tool, args });
+    };
+    const x = canvas.width / 2,
+      y = canvas.height / 2;
     add("setColor", { color: "#2e7d32" });
     add("setSize", { size: 8 });
     add("drawRectangle", { x: x - 80, y: y - 40, width: 160, height: 110 });
@@ -15,5 +29,5 @@ export const mockProvider = {
     if (!actions.length) add("drawCircle", { x, y, radius: 30 });
     if (!actions.length) add("myBrush", { x1: x, y1: y, x2: x + 30, y2: y + 30 });
     return { actions };
-  }
+  },
 };
